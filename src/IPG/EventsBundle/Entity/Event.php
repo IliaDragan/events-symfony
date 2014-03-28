@@ -44,27 +44,6 @@ class Event
     private $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="latitude", type="string", length=255)
-     */
-    private $latitude;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="longitude", type="string", length=255)
-     */
-    private $longitude;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="address", type="string", length=255)
-     */
-    private $address;
-
-    /**
      * @var class
      *
      * @ORM\ManyToMany(targetEntity="Category", mappedBy="events")
