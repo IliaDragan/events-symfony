@@ -21,21 +21,12 @@ class GmapController extends Controller
     {
         // Init map.
         $map = $this->get('ivory_google_map.map');
-        // get user Ip.
-        $userAgentIp = $this->get('request')->getClientIp();
 
-        // Get GeoLocation by Ip.
-        $result = $this->container
-            ->get('bazinga_geocoder.geocoder')
-            ->geocode($userAgentIp);
-
-        $latitude = $result->getLatitude();
-        $longitude = $result->getLongitude();
-
+        $userLocation = $this->getUserLocation();
         // Let's set some default settings.
         // More of them you can find in app\config\cconfig.yml.
         $map->setAutoZoom(false);
-        $map->setCenter($latitude, $longitude, true);
+        $map->setCenter($userLocation['latitude'], $userLocation['longitude'], true);
         $map->setMapOption('zoom', 8);
 
         // $map->setStylesheetOptions(array(
@@ -44,5 +35,24 @@ class GmapController extends Controller
         // ));
 
         return $this->render('IPGEventsBundle:Gmap:index.html.twig', array('map' => $map));
+    }
+
+    /**
+     * @return user location data
+     */
+    public function getUserLocation()
+    {
+        // get user Ip.
+        $userAgentIp = $this->get('request')->getClientIp();
+
+        // Get GeoLocation by Ip.
+        $result = $this->container
+            ->get('bazinga_geocoder.geocoder')
+            ->geocode($userAgentIp);
+
+        return array(
+            'latitude'  => $result->getLatitude(),
+            'longitude' => $result->getLongitude(),
+        );
     }
 }
