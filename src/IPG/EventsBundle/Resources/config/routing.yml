@@ -1,3 +1,8 @@
 ipg_events_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: IPGEventsBundle:Default:index }
+    resource: "@IPGEventsBundle/Controller"
+    type:     annotation
+
+# import routes from a controller class
+# events:
+#     resource: "@EventsBundle/Controller"
+#     type:     annotation
