@@ -18,6 +18,7 @@ class EventType extends AbstractType
             ->add('locationId')
             ->add('name')
             ->add('description')
+        ->add('save', 'submit')
         ;
     }
     
