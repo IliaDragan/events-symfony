@@ -25,9 +25,9 @@ class Event
     /**
      * @var integer
      *
-     * @ORM\Column(name="placeId", type="integer")
+     * @ORM\Column(name="locationId", type="integer")
      */
-    private $placeId;
+    private $locationId;
 
     /**
      * @var string
@@ -64,29 +64,6 @@ class Event
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set placeId
-     *
-     * @param integer $placeId
-     * @return Event
-     */
-    public function setPlaceId($placeId)
-    {
-        $this->placeId = $placeId;
-
-        return $this;
-    }
-
-    /**
-     * Get placeId
-     *
-     * @return integer
-     */
-    public function getPlaceId()
-    {
-        return $this->placeId;
     }
 
     /**
@@ -133,52 +110,6 @@ class Event
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set latitude
-     *
-     * @param string $latitude
-     * @return Event
-     */
-    public function setLatitude($latitude)
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    /**
-     * Get latitude
-     *
-     * @return string
-     */
-    public function getLatitude()
-    {
-        return $this->latitude;
-    }
-
-    /**
-     * Set longitude
-     *
-     * @param string $longitude
-     * @return Event
-     */
-    public function setLongitude($longitude)
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
-    /**
-     * Get longitude
-     *
-     * @return string
-     */
-    public function getLongitude()
-    {
-        return $this->longitude;
     }
 
     /**
