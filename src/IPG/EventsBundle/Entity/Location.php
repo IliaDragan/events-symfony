@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Location
+ *
+ * @ORM\Table()
+ * @ORM\Entity
  */
 class Location
 {
@@ -21,26 +24,28 @@ class Location
     /**
      * @var string
      *
-     * @ORM\Column(name="latitude", type="string", length=255)
+     * @ORM\Column(name="latitude", type="string")
      */
     private $latitude;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="longitude", type="string", length=255)
+     * @ORM\Column(name="longitude", type="string")
      */
     private $longitude;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255)
+     * @ORM\Column(name="address", type="string")
      */
     private $address;
 
     /**
-     * @var class
+     * @var string
+     *
+     * @ORM\Column(name="files", type="string")
      */
     private $files;
 
@@ -48,7 +53,7 @@ class Location
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -58,10 +63,10 @@ class Location
     /**
      * Set latitude
      *
-     * @param \varchar $latitude
+     * @param string $latitude
      * @return Location
      */
-    public function setLatitude(\varchar $latitude)
+    public function setLatitude($latitude)
     {
         $this->latitude = $latitude;
 
@@ -71,7 +76,7 @@ class Location
     /**
      * Get latitude
      *
-     * @return \varchar
+     * @return string 
      */
     public function getLatitude()
     {
@@ -81,10 +86,10 @@ class Location
     /**
      * Set longitude
      *
-     * @param \varchar $longitude
+     * @param string $longitude
      * @return Location
      */
-    public function setLongitude(\varchar $longitude)
+    public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
 
@@ -94,7 +99,7 @@ class Location
     /**
      * Get longitude
      *
-     * @return \varchar
+     * @return string 
      */
     public function getLongitude()
     {
@@ -117,7 +122,7 @@ class Location
     /**
      * Get address
      *
-     * @return string
+     * @return string 
      */
     public function getAddress()
     {
@@ -127,7 +132,7 @@ class Location
     /**
      * Set files
      *
-     * @param \stdClass $files
+     * @param string $files
      * @return Location
      */
     public function setFiles($files)
@@ -140,7 +145,7 @@ class Location
     /**
      * Get files
      *
-     * @return \stdClass
+     * @return string 
      */
     public function getFiles()
     {
