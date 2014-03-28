@@ -2,6 +2,7 @@
 
 namespace IPG\EventsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -63,11 +64,23 @@ class Event
      */
     private $address;
 
+    /**
+     * @var class
+     *
+     * @ORM\ManyToMany(targetEntity="Category", mappedBy="events")
+     */
+    private $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -90,7 +103,7 @@ class Event
     /**
      * Get placeId
      *
-     * @return integer 
+     * @return integer
      */
     public function getPlaceId()
     {
@@ -113,7 +126,7 @@ class Event
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -136,7 +149,7 @@ class Event
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -159,7 +172,7 @@ class Event
     /**
      * Get latitude
      *
-     * @return string 
+     * @return string
      */
     public function getLatitude()
     {
@@ -182,7 +195,7 @@ class Event
     /**
      * Get longitude
      *
-     * @return string 
+     * @return string
      */
     public function getLongitude()
     {
@@ -205,10 +218,43 @@ class Event
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \IPG\EventsBundle\Entity\Category $categories
+     * @return Event
+     */
+    public function addCategory(\IPG\EventsBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \IPG\EventsBundle\Entity\Category $categories
+     */
+    public function removeCategory(\IPG\EventsBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }

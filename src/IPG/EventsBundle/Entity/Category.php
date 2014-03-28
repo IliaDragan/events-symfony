@@ -2,6 +2,7 @@
 
 namespace IPG\EventsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,11 +36,23 @@ class Category
      */
     private $parentId;
 
+    /**
+     * @var object
+     *
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="categories")
+     * @ORM\JoinTable(name="CategoriesGroups")
+     */
+    private $events;
+
+    public function __construct()
+    {
+        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -62,7 +75,7 @@ class Category
     /**
      * Get categoryName
      *
-     * @return string 
+     * @return string
      */
     public function getCategoryName()
     {
@@ -85,10 +98,43 @@ class Category
     /**
      * Get parentId
      *
-     * @return integer 
+     * @return integer
      */
     public function getParentId()
     {
         return $this->parentId;
+    }
+
+    /**
+     * Add events
+     *
+     * @param \IPG\EventsBundle\Entity\Event $events
+     * @return Category
+     */
+    public function addEvent(\IPG\EventsBundle\Entity\Event $events)
+    {
+        $this->events[] = $events;
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param \IPG\EventsBundle\Entity\Event $events
+     */
+    public function removeEvent(\IPG\EventsBundle\Entity\Event $events)
+    {
+        $this->events->removeElement($events);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 }
