@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class EventController extends Controller
 {
     /**
-     * @Route("/create/event")
+     * @Route("/event/create")
      *
      * @Template()
      */
@@ -25,10 +25,24 @@ class EventController extends Controller
             $em->persist($event);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('event_page'));
+            return $this->redirect($this->generateUrl('event_page', array('id' => $event->getId())));
         }
 
 
         return array('form' => $form->createView());
+    }
+
+    /**
+     * @Route("/event/{id}", name="event_page")
+     *
+     * @Template()
+     */
+    public function indexAction($id) {
+        $event = new Event();
+
+ $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('IPGEventsBundle:Event');
+        $event = $repo->find($id);
+        return array('event' => $event);
     }
 }

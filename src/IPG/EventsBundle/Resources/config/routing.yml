@@ -1,11 +1,3 @@
 ipg_events_homepage:
-<<<<<<< HEAD
-    pattern:  /hello/{name}
-    defaults: { _controller: IPGEventsBundle:Default:index }
-ipg_events_create_event:
-    pattern: /event/create
-    defaults: { _controller: IPGEventsBundle:Event:create }
-=======
     resource: "@IPGEventsBundle/Controller"
     type:     annotation
->>>>>>> feature-ag-gmap
