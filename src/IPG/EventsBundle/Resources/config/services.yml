@@ -1,0 +1,7 @@
+parameters:
+#    ipg_events.example.class: IPG\EventsBundle\Example
+
+services:
+#    ipg_events.example:
+#        class: %ipg_events.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

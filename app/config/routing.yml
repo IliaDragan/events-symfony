@@ -1,0 +1,4 @@
+ipg_events:
+    resource: "@IPGEventsBundle/Resources/config/routing.yml"
+    prefix:   /
+
