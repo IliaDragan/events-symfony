@@ -17,6 +17,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new IPG\EventsBundle\IPGEventsBundle(),
+            new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
+            new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
         );
 

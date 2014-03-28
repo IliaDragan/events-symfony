@@ -11,6 +11,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class EventController extends Controller
 {
     /**
+     * @Route("/create/event")
+     *
      * @Template()
      */
     public function createAction() {
