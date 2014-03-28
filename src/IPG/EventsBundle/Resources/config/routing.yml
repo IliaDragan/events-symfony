@@ -1,8 +1,3 @@
 ipg_events_homepage:
     resource: "@IPGEventsBundle/Controller"
     type:     annotation
-
-# import routes from a controller class
-# events:
-#     resource: "@EventsBundle/Controller"
-#     type:     annotation

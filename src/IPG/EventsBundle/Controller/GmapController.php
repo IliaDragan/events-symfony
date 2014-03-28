@@ -28,7 +28,7 @@ class GmapController extends Controller
         $userLocation = $this->getUserLocation();
 
         // Set marker on the map.
-        // $marker = $this->setMarker($latitude, $longitude);
+        $marker = $this->setMarker($userLocation['latitude'], $userLocation['longitude']);
 
         // Let's set some default settings.
         // More of them you can find in app\config\cconfig.yml.
@@ -88,6 +88,7 @@ class GmapController extends Controller
             'clickable' => TRUE,
             'flat'      => true,
         ));
+
         return $marker;
     }
 }
