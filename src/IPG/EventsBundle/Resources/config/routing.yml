@@ -2,5 +2,5 @@ ipg_events_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: IPGEventsBundle:Default:index }
 ipg_events_create_event:
-    pattern: /create/event
+    pattern: /event/create
     defaults: { _controller: IPGEventsBundle:Event:create }

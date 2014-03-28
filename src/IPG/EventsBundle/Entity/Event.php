@@ -30,6 +30,22 @@ class Event
     private $locationId;
 
     /**
+     * @param int $locationId
+     */
+    public function setLocationId($locationId)
+    {
+        $this->locationId = $locationId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLocationId()
+    {
+        return $this->locationId;
+    }
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)

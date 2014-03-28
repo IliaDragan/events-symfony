@@ -14,7 +14,18 @@ class EventController extends Controller
      * @Template()
      */
     public function createAction() {
-        $form = $this->createForm(new EventType(), new Event());
+        $event = new Event();
+        $form = $this->createForm(new EventType(), $event);
+        $form->handleRequest($this->get('request_stack')->getCurrentRequest());
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($event);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('event_page'));
+        }
+
 
         return array('form' => $form->createView());
     }

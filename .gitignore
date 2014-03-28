@@ -11,3 +11,12 @@ web/bundles/*
 # Configuration files
 app/config/parameters.ini
 app/config/parameters.yml
+.idea/.name
+.idea/deployment.xml
+.idea/encodings.xml
+.idea/events-symforny.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/scopes/scope_settings.xml
+.idea/vcs.xml
+.idea/workspace.xml
