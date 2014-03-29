@@ -12,7 +12,7 @@ use Ivory\GoogleMap\Places\AutocompleteComponentRestriction;
 use Ivory\GoogleMap\Places\AutocompleteType;
 use Ivory\GoogleMap\Helper\Places\AutocompleteHelper;
 
-require_once('/usr/share/php/FirePHPCore/fb.php');
+// require_once('/usr/share/php/FirePHPCore/fb.php');
 
 class LocationController extends Controller
 {
