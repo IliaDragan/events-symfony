@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Bc\Bundle\BootstrapBundle\BcBootstrapBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
