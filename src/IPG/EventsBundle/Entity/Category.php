@@ -4,11 +4,13 @@ namespace IPG\EventsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Category
  *
- * @ORM\Table()
+ * @Gedmo\Tree(type="nested")
+ * @ORM\Table(name="Category")
  * @ORM\Entity(repositoryClass="IPG\EventsBundle\Entity\CategoryRepository")
  */
 class Category
@@ -30,11 +32,41 @@ class Category
     private $categoryName;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="parentId", type="integer")
+     * @Gedmo\TreeLeft
+     * @ORM\Column(name="lft", type="integer")
      */
-    private $parentId;
+    private $lft;
+
+    /**
+     * @Gedmo\TreeLevel
+     * @ORM\Column(name="lvl", type="integer")
+     */
+    private $lvl;
+
+    /**
+     * @Gedmo\TreeRight
+     * @ORM\Column(name="rgt", type="integer")
+     */
+    private $rgt;
+
+    /**
+     * @Gedmo\TreeRoot
+     * @ORM\Column(name="root", type="integer", nullable=true)
+     */
+    private $root;
+
+    /**
+     * @Gedmo\TreeParent
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     * @ORM\OrderBy({"lft" = "ASC"})
+     */
+    private $children;
 
     /**
      * @var object
@@ -83,29 +115,6 @@ class Category
     }
 
     /**
-     * Set parentId
-     *
-     * @param integer $parentId
-     * @return Category
-     */
-    public function setParentId($parentId)
-    {
-        $this->parentId = $parentId;
-
-        return $this;
-    }
-
-    /**
-     * Get parentId
-     *
-     * @return integer
-     */
-    public function getParentId()
-    {
-        return $this->parentId;
-    }
-
-    /**
      * Add events
      *
      * @param \IPG\EventsBundle\Entity\Event $events
@@ -136,5 +145,28 @@ class Category
     public function getEvents()
     {
         return $this->events;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \IPG\EventsBundle\Entity\Category $parent
+     * @return Category
+     */
+    public function setParent(\IPG\EventsBundle\Entity\Category $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \IPG\EventsBundle\Entity\Category
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }
