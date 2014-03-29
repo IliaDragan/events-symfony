@@ -21,7 +21,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "egeloen/google-map-bundle": "~2.1",
         "willdurand/geocoder": "*",
-        "gedmo/doctrine-extensions": "dev-master"
+        "gedmo/doctrine-extensions": "dev-master",
+        "hwi/oauth-bundle": "0.4.*@dev"
     },
     "scripts": {
         "post-install-cmd": [
