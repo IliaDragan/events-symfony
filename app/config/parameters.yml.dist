@@ -13,3 +13,8 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    auth_facebook_client_id:
+    auth_facebook_secret:
+    auth_google_client_id:
+    auth_google_secret:
