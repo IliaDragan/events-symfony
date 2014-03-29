@@ -25,7 +25,9 @@
         "braincrafted/bootstrap-bundle": "~1.4",
         "twbs/bootstrap": "2.3.*",
         "jquery/jquery":  "1.10.*",
-        "leafo/lessphp": "0.4.0"
+        "leafo/lessphp": "0.4.0",
+        "gedmo/doctrine-extensions": "dev-master",
+        "hwi/oauth-bundle": "0.4.*@dev"
     },
     "scripts": {
         "post-install-cmd": [

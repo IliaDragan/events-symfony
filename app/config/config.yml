@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: doctrine_extensions.yml }
 
 framework:
     #esi:             ~
@@ -94,6 +95,13 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+        # Config doctrine-extensions
+        mappings:
+            tree:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Tree\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -172,7 +180,6 @@ ivory_google_map:
 
         # google map Api language, default en
         language: en
-
 bazinga_geocoder:
     fake_ip:
         enabled:              true
@@ -192,3 +199,32 @@ bazinga_geocoder:
             locale:               ~
             region:               ~
             use_ssl:              false
+hwi_oauth:
+    firewall_name: secured_area
+    resource_owners:
+        facebook:
+            type: facebook
+            client_id: %auth_facebook_client_id%
+            client_secret: %auth_facebook_secret%
+            scope: "email"
+            infos_url:     "https://graph.facebook.com/me?fields=username,name,email,picture.type(square)"
+            paths:
+                email:          email
+                profilepicture: picture.data.url
+            options:
+                display: popup
+        google:
+            type: google
+            client_id: %auth_google_client_id%
+            client_secret: %auth_google_secret%
+            scope: "https://www.googleapis.com/auth/plus.login"
+            paths:
+                email:           email
+                profilepicture:  picture
+            options:
+                request_visible_actions: "http://schemas.google.com/AddActivity http://schemas.google.com/CommentActivity"
+
+services:
+    hwi_oauth.user.provider.entity:
+        class: IPG\EventsBundle\Security\UserProvider
+        arguments: [@doctrine, IPG\EventsBundle\Entity\User, {facebook: username, google: username}]
