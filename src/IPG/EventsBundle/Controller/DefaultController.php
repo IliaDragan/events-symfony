@@ -4,11 +4,17 @@ namespace IPG\EventsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    /**
+     * @Route("/")
+     *
+     * @Template()
+     */
+    public function indexAction()
     {
-        return $this->render('IPGEventsBundle:Default:index.html.twig', array('name' => $name));
+        return array();
     }
 }
