@@ -38,6 +38,9 @@ class EventController extends Controller
      * @Template()
      */
     public function indexAction($id) {
+
+        $event = new Event();
+
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('IPGEventsBundle:Event');
         $event = $repo->find($id);
