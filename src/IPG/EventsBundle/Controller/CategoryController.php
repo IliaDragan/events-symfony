@@ -32,8 +32,8 @@ class CategoryController extends Controller
     {
         $categories = $this->getDoctrine()
             ->getRepository('IPGEventsBundle:Category')
-            ->findBy(
-                array('categoryName' => $name)
+            ->findLike(
+                array('categoryName', $name)
             );
 
         return $this->render(
