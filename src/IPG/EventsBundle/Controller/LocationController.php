@@ -83,6 +83,6 @@ class LocationController extends Controller
         echo $autocompleteHelper->renderHtmlContainer($autocomplete);
         echo $autocompleteHelper->renderJavascripts($autocomplete);
 
-        fb($autocomplete);
+        // fb($autocomplete);
     }
 }
