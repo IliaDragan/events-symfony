@@ -15,7 +15,9 @@ class EventType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // Init our location class.
         $location = new LocationController;
+        // Get field attributes that is the same as for autocomplete js.
         $fieldAttributes = $location->getGmapAttributes();
 
         $builder

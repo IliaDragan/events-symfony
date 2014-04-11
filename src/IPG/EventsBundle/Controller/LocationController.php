@@ -32,48 +32,54 @@ class LocationController extends Controller
         {
             if ($form->isValid())
             {
+                // Get location address from &_POST.
                 $address = $_POST['ipg_eventsbundle_location']['location'];
-
-                $location->setAddress($address);
-
-                // Init geoceder.
-                $geocoder = $this->initGeocoder();
-
-                // Get lat. && long. from provided address.
-                try {
-                    $geocode = $geocoder->geocode($address);
-                    $location->setLatitude($geocode->getLatitude());
-                    $location->setLongitude($geocode->getLongitude());
-                } catch (Exception $e) {
-                    echo $e->getMessage();
-                }
-
+                // Try to retrive location id from the db based on given address.
                 $locationId = $this->getDoctrine()
                     ->getRepository('IPGEventsBundle:Location')
                     ->getId(array('address', $address));
-
+                // Define Doctrine.
+                $em = $this->getDoctrine()->getManager();
+                // Check if already exist location with given address if not create new one.
                 if (!$locationId)
                 {
+                    // Set address in Location entity.
+                    $location->setAddress($address);
+                    // Init geoceder.
+                    $geocoder = $this->initGeocoder();
+                    // Get latitude && longitude from provided address.
+                    try {
+                        // Get geo data based on given address.
+                        $geocode = $geocoder->geocode($address);
+                        // Set latitude in Location entity.
+                        $location->setLatitude($geocode->getLatitude());
+                        // Set longitude in Location entity.
+                        $location->setLongitude($geocode->getLongitude());
+                    } catch (Exception $e) {
+                        // Echo the error.
+                        echo $e->getMessage();
+                    }
+                    // Create new Location entity.
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($location);
                     $em->flush();
-
+                    // Get new location id
                     $locationId = $location->getId();
                 } else {
+                    // Use already created location.
                     $locationId = $locationId[0]['id'];
                 }
-
+                // Redirect user to overview page.
                 return $this->redirect($this->generateUrl('location_page', array('id' => $locationId)));
             }
         }
-
+        // Render create Location entity form.
         return $this->render('IPGEventsBundle:Location:create.html.twig',
             array(
                 'form' => $form->createView(),
                 'map' => $this->mapAutocomplete()
             ));
     }
-
 
     /**
      * @Route("/location/{id}", name="location_page")
@@ -91,16 +97,17 @@ class LocationController extends Controller
 
     /**
      * Generate autocomplete object and return js needed for autocomplete.
+     * @return string
      */
     public function mapAutocomplete()
     {
         $autocomplete = new Autocomplete();
 
+        // Get autocomplete gmapField attributes.
         $fieldAttributes = $this->getGmapAttributes();
 
         $autocomplete->setPrefixJavascriptVariable('place_autocomplete_');
         $autocomplete->setInputId($fieldAttributes['InputId']);
-
         $autocomplete->setInputAttributes($fieldAttributes['InputAttributes']);
 
         // $autocomplete->setValue('foo');
@@ -111,7 +118,6 @@ class LocationController extends Controller
 
         $autocomplete->setAsync(false);
         $autocomplete->setLanguage('en');
-
 
         // Render our autocomplete field.
         $autocompleteHelper = new AutocompleteHelper();
@@ -130,7 +136,8 @@ class LocationController extends Controller
     }
 
     /**
-     * @return Gmap attributes needed for js and form field.
+     * Helper that will return Gmap attributes needed for js and form field.
+     * @return array
      */
     public function getGmapAttributes() {
         return array(
@@ -148,7 +155,7 @@ class LocationController extends Controller
     }
 
     /**
-     * Init geocoder object.
+     * Helper that will init geocoder object.
      * @return object
      */
     public function initGeocoder() {

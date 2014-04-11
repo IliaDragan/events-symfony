@@ -23,63 +23,65 @@ class EventController extends Controller
         $event = new Event();
         $form = $this->createForm(new EventType(), $event);
         $form->handleRequest($this->get('request_stack')->getCurrentRequest());
-
-        // Init location object.
+        // Init location entity.
         $locationEntity = new Location();
-        // $form_entity = $this->createForm(new LocationType(), $locationEntity);
-        $LocationController = new LocationController();
+        // Init location controller.
+        $locationController = new LocationController();
 
         $request = $this->container->get('request');
         if ($request->getMethod() == 'POST')
         {
             if ($form->isValid())
             {
+                // Get location address from &_POST.
                 $address = $_POST['ipg_eventsbundle_event']['location'];
-                $locationEntity->setAddress($address);
-
-                // Init geoceder.
-                $geocoder = $LocationController->initGeocoder();
-
-                // Get lat. && long. from provided address.
-                try {
-                    $geocode = $geocoder->geocode($address);
-                    $locationEntity->setLatitude($geocode->getLatitude());
-                    $locationEntity->setLongitude($geocode->getLongitude());
-                } catch (Exception $e) {
-                    echo $e->getMessage();
-                }
-
-                // Define Doctrine.
-                $em = $this->getDoctrine()->getManager();
-                // Save Location and return location id to be set in event object.
+                // Try to retrive location id from the db based on given address.
                 $locationId = $this->getDoctrine()
                     ->getRepository('IPGEventsBundle:Location')
                     ->getId(array('address', $address));
-
+                // Define Doctrine.
+                $em = $this->getDoctrine()->getManager();
+                // Check if already exist location with given address if not create new one.
                 if (!$locationId)
                 {
+                    // Set address in Location entity.
+                    $locationEntity->setAddress($address);
+                    // Init geoceder.
+                    $geocoder = $locationController->initGeocoder();
+                    // Get latitude && longitude from provided address.
+                    try {
+                        // Get geo data based on given address.
+                        $geocode = $geocoder->geocode($address);
+                        // Set latitude in Location entity.
+                        $locationEntity->setLatitude($geocode->getLatitude());
+                        // Set longitude in Location entity.
+                        $locationEntity->setLongitude($geocode->getLongitude());
+                    } catch (Exception $e) {
+                        // Echo the error.
+                        echo $e->getMessage();
+                    }
+                    // Create new Location entity.
                     $em->persist($locationEntity);
                     $em->flush();
-
+                     // Get new location id
                     $locationId = $locationEntity->getId();
                 } else {
+                    // Use already created location.
                     $locationId = $locationId[0]['id'];
                 }
-
                 // Finally save event object.
                 $event->setLocationId($locationId);
                 $em->persist($event);
                 $em->flush();
-
+                // Redirect user to overview page.
                 return $this->redirect($this->generateUrl('event_page', array('id' => $event->getId())));
             }
         }
-
-        $gmapAutocomplete = new LocationController;
+        // Render create Event entity form.
         return $this->render('IPGEventsBundle:Location:create.html.twig',
             array(
                 'form' => $form->createView(),
-                'map' => $gmapAutocomplete->mapAutocomplete()
+                'map' => $locationController->mapAutocomplete()
             ));
     }
 
