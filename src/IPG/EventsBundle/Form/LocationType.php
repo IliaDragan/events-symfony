@@ -5,6 +5,7 @@ namespace IPG\EventsBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use IPG\EventsBundle\Controller\LocationController;
 
 class LocationType extends AbstractType
 {
@@ -14,11 +15,15 @@ class LocationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $location = new LocationController;
+        $fieldAttributes = $location->getGmapAttributes();
+
         $builder
-            ->add('latitude')
-            ->add('longitude')
-            ->add('address')
-            ->add('files')
+            ->add('location', 'text', array(
+                'mapped' => false,
+                'attr' => $fieldAttributes['InputAttributes']
+            ))
         ->add('save', 'submit')
         ;
     }

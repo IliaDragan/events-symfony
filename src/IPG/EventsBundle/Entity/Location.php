@@ -43,17 +43,9 @@ class Location
     private $address;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="files", type="string")
-     */
-    private $files;
-
-
-    /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -76,7 +68,7 @@ class Location
     /**
      * Get latitude
      *
-     * @return string 
+     * @return string
      */
     public function getLatitude()
     {
@@ -99,7 +91,7 @@ class Location
     /**
      * Get longitude
      *
-     * @return string 
+     * @return string
      */
     public function getLongitude()
     {
@@ -122,33 +114,10 @@ class Location
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
         return $this->address;
-    }
-
-    /**
-     * Set files
-     *
-     * @param string $files
-     * @return Location
-     */
-    public function setFiles($files)
-    {
-        $this->files = $files;
-
-        return $this;
-    }
-
-    /**
-     * Get files
-     *
-     * @return string 
-     */
-    public function getFiles()
-    {
-        return $this->files;
     }
 }

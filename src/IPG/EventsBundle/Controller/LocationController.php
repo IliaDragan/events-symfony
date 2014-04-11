@@ -12,7 +12,7 @@ use Ivory\GoogleMap\Places\AutocompleteComponentRestriction;
 use Ivory\GoogleMap\Places\AutocompleteType;
 use Ivory\GoogleMap\Helper\Places\AutocompleteHelper;
 
-// require_once('/usr/share/php/FirePHPCore/fb.php');
+require_once('/usr/share/php/FirePHPCore/fb.php');
 
 class LocationController extends Controller
 {
@@ -22,23 +22,45 @@ class LocationController extends Controller
      * @Template()
      */
     public function createAction() {
+
         $location = new Location();
         $form = $this->createForm(new LocationType(), $location);
         $form->handleRequest($this->get('request_stack')->getCurrentRequest());
 
-        $this->mapAutocomplete();
+        $request = $this->container->get('request');
+        if ($request->getMethod() == 'POST')
+        {
+            if ($form->isValid())
+            {
+                $address = $_POST['ipg_eventsbundle_location']['location'];
 
+                $location->setAddress($address);
 
+                // Init geoceder.
+                $geocoder = $this->initGeocoder();
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($location);
-            $em->flush();
+                // Get lat. && long. from provided address.
+                try {
+                    $geocode = $geocoder->geocode($address);
+                    $location->setLatitude($geocode->getLatitude());
+                    $location->setLongitude($geocode->getLongitude());
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
 
-            return $this->redirect($this->generateUrl('location_page', array('id' => $location->getId())));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($location);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('location_page', array('id' => $location->getId())));
+            }
         }
 
-        return array('form' => $form->createView());
+        return $this->render('IPGEventsBundle:Location:create.html.twig',
+            array(
+                'form' => $form->createView(),
+                'map' => $this->mapAutocomplete()
+            ));
     }
 
 
@@ -56,18 +78,19 @@ class LocationController extends Controller
         return array('location' => $location);
     }
 
-
-
-
+    /**
+     * Generate autocomplete object and return js needed for autocomplete.
+     */
     public function mapAutocomplete()
     {
         $autocomplete = new Autocomplete();
 
-        $autocomplete->setPrefixJavascriptVariable('place_autocomplete_');
-        $autocomplete->setInputId('place_input');
+        $fieldAttributes = $this->getGmapAttributes();
 
-        $autocomplete->setInputAttributes(array('class' => 'my-class'));
-        // $autocomplete->setInputAttribute('class', 'my-class');
+        $autocomplete->setPrefixJavascriptVariable('place_autocomplete_');
+        $autocomplete->setInputId($fieldAttributes['InputId']);
+
+        $autocomplete->setInputAttributes($fieldAttributes['InputAttributes']);
 
         // $autocomplete->setValue('foo');
 
@@ -78,11 +101,52 @@ class LocationController extends Controller
         $autocomplete->setAsync(false);
         $autocomplete->setLanguage('en');
 
+
         // Render our autocomplete field.
         $autocompleteHelper = new AutocompleteHelper();
-        echo $autocompleteHelper->renderHtmlContainer($autocomplete);
-        echo $autocompleteHelper->renderJavascripts($autocomplete);
 
-        // fb($autocomplete);
+        // Prepare html for output.
+        // $html = '';
+        // $html .= '<div class="control-group">';
+        // $html .= $autocompleteHelper->renderHtmlContainer($autocomplete);
+        // $html .= '</div>';
+
+        // Prepare js for output.
+        $js = $autocompleteHelper->renderJavascripts($autocomplete);
+
+        $output = /*$html .*/ $js;
+        return $output;
+    }
+
+    /**
+     * @return Gmap attributes needed for js and form field.
+     */
+    public function getGmapAttributes() {
+        return array(
+            // @note: For #id we use real field #id.
+            // @todo: Find a way to set our own #id.
+            'InputId' => 'ipg_eventsbundle_location_location',
+            'InputAttributes' => array(
+                'class'       => 'gmap-autocompleteplace',
+                'type'        => 'text',
+                'placeholder' => 'Type your location',
+                'required'    => 'required',
+                'autocomplete' => 'on',
+            )
+        );
+    }
+
+    /**
+     * Init geocoder object.
+     * @return object
+     */
+    public function initGeocoder() {
+        $geocoder = new \Geocoder\Geocoder();
+        $adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter();
+        $chain    = new \Geocoder\Provider\ChainProvider(array(
+            new \Geocoder\Provider\GoogleMapsProvider($adapter, 'en_EN', 'English', true),
+        ));
+        $geocoder->registerProvider($chain);
+        return $geocoder;
     }
 }
