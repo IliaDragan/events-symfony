@@ -12,7 +12,7 @@ use Ivory\GoogleMap\Places\AutocompleteComponentRestriction;
 use Ivory\GoogleMap\Places\AutocompleteType;
 use Ivory\GoogleMap\Helper\Places\AutocompleteHelper;
 
-require_once('/usr/share/php/FirePHPCore/fb.php');
+// require_once('/usr/share/php/FirePHPCore/fb.php');
 
 class LocationController extends Controller
 {
@@ -48,11 +48,22 @@ class LocationController extends Controller
                     echo $e->getMessage();
                 }
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($location);
-                $em->flush();
+                $locationId = $this->getDoctrine()
+                    ->getRepository('IPGEventsBundle:Location')
+                    ->getId(array('address', $address));
 
-                return $this->redirect($this->generateUrl('location_page', array('id' => $location->getId())));
+                if (!$locationId)
+                {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($location);
+                    $em->flush();
+
+                    $locationId = $location->getId();
+                } else {
+                    $locationId = $locationId[0]['id'];
+                }
+
+                return $this->redirect($this->generateUrl('location_page', array('id' => $locationId)));
             }
         }
 
@@ -125,7 +136,7 @@ class LocationController extends Controller
         return array(
             // @note: For #id we use real field #id.
             // @todo: Find a way to set our own #id.
-            'InputId' => 'ipg_eventsbundle_location_location',
+            'InputId' => 'ipg_eventsbundle_event_location',
             'InputAttributes' => array(
                 'class'       => 'gmap-autocompleteplace',
                 'type'        => 'text',
