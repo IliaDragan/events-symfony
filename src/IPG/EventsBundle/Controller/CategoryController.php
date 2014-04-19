@@ -2,11 +2,13 @@
 
 namespace IPG\EventsBundle\Controller;
 
+use IPG\EventsBundle\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use IPG\EventsBundle\Entity\Category;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class CategoryController extends Controller
 {
@@ -43,17 +45,23 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/category/create/{name}", name="categories_create")
+     * @Route("/category/create/", name="categories_create")
      */
-    public function createAction($name)
+    public function createAction(Request $request)
     {
+
         $category = new Category();
-        $category->setCategoryName($name);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($category);
-        $em->flush();
+        $form = $this->createForm(new CategoryType(), $category);
 
-        return new Response('New category name: '.$category->getCategoryName());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+        }
+        return $this->render('IPGEventsBundle:Category:create.html.twig',
+            array('form' => $form->createView()));
     }
 }

@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EventType extends AbstractType
 {
-        /**
+     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -18,10 +18,13 @@ class EventType extends AbstractType
             ->add('locationId')
             ->add('name')
             ->add('description')
-        ->add('save', 'submit')
+            ->add('categories', 'entity', array(
+                'class' => 'IPG\EventsBundle\Entity\Category',
+            ))
+            ->add('save', 'submit')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

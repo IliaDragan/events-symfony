@@ -34,4 +34,15 @@ class CategoryRepository extends NestedTreeRepository
                 ")
                 ->getResult();
     }
+
+    public function findParentCategries()
+    {
+        return $this->getEntityManager()
+            ->createQuery("
+                SELECT c.id, c.categoryName
+                    FROM IPGEventsBundle:Category c
+                    WHERE c.parent_id = NULL
+            ")
+            ->getResult();
+    }
 }

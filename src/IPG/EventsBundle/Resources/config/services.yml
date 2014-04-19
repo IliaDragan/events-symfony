@@ -5,3 +5,8 @@ services:
 #    ipg_events.example:
 #        class: %ipg_events.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    ipg_events.type.category_selector:
+            class: IPG\EventsBundle\Form\Type\CategorySelectorType
+            arguments: ["@doctrine.orm.entity_manager"]
+            tags:
+                - { name: form.type, alias: category_selector }

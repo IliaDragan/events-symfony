@@ -5,6 +5,7 @@ namespace IPG\EventsBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints as Assert;
 
 /**
  * Category
@@ -168,5 +169,134 @@ class Category
     public function getParent()
     {
         return $this->parent;
+    }
+
+    public function __toString() {
+        return $this->categoryName;
+    }
+
+    /**
+     * Set lft
+     *
+     * @param integer $lft
+     * @return Category
+     */
+    public function setLft($lft)
+    {
+        $this->lft = $lft;
+
+        return $this;
+    }
+
+    /**
+     * Get lft
+     *
+     * @return integer 
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    /**
+     * Set lvl
+     *
+     * @param integer $lvl
+     * @return Category
+     */
+    public function setLvl($lvl)
+    {
+        $this->lvl = $lvl;
+
+        return $this;
+    }
+
+    /**
+     * Get lvl
+     *
+     * @return integer 
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    /**
+     * Set rgt
+     *
+     * @param integer $rgt
+     * @return Category
+     */
+    public function setRgt($rgt)
+    {
+        $this->rgt = $rgt;
+
+        return $this;
+    }
+
+    /**
+     * Get rgt
+     *
+     * @return integer 
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
+    /**
+     * Set root
+     *
+     * @param integer $root
+     * @return Category
+     */
+    public function setRoot($root)
+    {
+        $this->root = $root;
+
+        return $this;
+    }
+
+    /**
+     * Get root
+     *
+     * @return integer 
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    /**
+     * Add children
+     *
+     * @param \IPG\EventsBundle\Entity\Category $children
+     * @return Category
+     */
+    public function addChild(\IPG\EventsBundle\Entity\Category $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \IPG\EventsBundle\Entity\Category $children
+     */
+    public function removeChild(\IPG\EventsBundle\Entity\Category $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }
