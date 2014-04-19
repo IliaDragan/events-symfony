@@ -7,9 +7,12 @@ vendor/*
 */cache/*
 web/uploads/*
 web/bundles/*
+composer.lock
 
 # Configuration files
 app/config/parameters.ini
 app/config/parameters.yml
 
 web/.htaccess
+.idea/*
+log/*
