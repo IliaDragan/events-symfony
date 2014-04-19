@@ -18,10 +18,16 @@ class EventType extends AbstractType
             ->add('locationId')
             ->add('name')
             ->add('description')
-        ->add('save', 'submit')
+            ->add('categories', 'collection', array(
+                'type'          => new CategoryType(),
+                'allow_add'     => true,
+                'allow_delete'  => true,
+                'by_reference'  => false,
+            ))
+            ->add('save', 'submit')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
