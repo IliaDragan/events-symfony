@@ -8,6 +8,7 @@
         {{ form_row(form.description) }}
 
         <h3>Categories</h3>
+        {{ form_row(form.parentCategory) }}
         <ul class="categories" data-prototype="{{ form_widget(form.categories.vars.prototype)|e }}">
             {% for category in form.categories %}
                 <li>{{ form_row(category.categoryName) }}</li>

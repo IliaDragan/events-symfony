@@ -24,7 +24,9 @@ class EventController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
             if ($categories = $event->getCategories()) {
+                $parentCategory = $form->get('parentCategory')->getData();
                 foreach ($categories as $category) {
+                    $category->setParent($parentCategory);
                     $em->persist($category);
                 }
             }
