@@ -1,5 +1,19 @@
 {% extends "IPGEventsBundle::layout.html.twig" %}
 {% block content %}
-    {{ form(form) }}
+    {#{{ form(form) }}#}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {#{{ dump(form) }}#}
+        {{ form_row(form.locationId) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+
+        <h3>Categories</h3>
+        {{ form_row(form.parentCategory) }}
+        <ul class="categories" data-prototype="{{ form_widget(form.categories.vars.prototype)|e }}">
+            {% for category in form.categories %}
+                <li>{{ form_row(category.categoryName) }}</li>
+            {% endfor %}
+        </ul>
+    {{ form_end(form) }}
 {% endblock %}
 

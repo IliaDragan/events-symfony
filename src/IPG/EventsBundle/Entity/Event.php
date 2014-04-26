@@ -62,7 +62,8 @@ class Event
     /**
      * @var class
      *
-     * @ORM\ManyToMany(targetEntity="Category", mappedBy="events")
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="events", cascade="persist")
+     * @ORM\JoinTable(name="events_categories")
      */
     private $categories;
 
@@ -70,7 +71,6 @@ class Event
     {
         $this->categories = new ArrayCollection();
     }
-
 
     /**
      * Get id
@@ -152,14 +152,24 @@ class Event
     }
 
     /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
      * Add categories
      *
      * @param \IPG\EventsBundle\Entity\Category $categories
      * @return Event
      */
-    public function addCategory(\IPG\EventsBundle\Entity\Category $categories)
+    public function addCategory(Category $category)
     {
-        $this->categories[] = $categories;
+        $this->categories->add($category);
 
         return $this;
     }
@@ -169,18 +179,8 @@ class Event
      *
      * @param \IPG\EventsBundle\Entity\Category $categories
      */
-    public function removeCategory(\IPG\EventsBundle\Entity\Category $categories)
+    public function removeCategory(Category $category)
     {
-        $this->categories->removeElement($categories);
-    }
-
-    /**
-     * Get categories
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCategories()
-    {
-        return $this->categories;
+        $this->categories->removeElement($category);
     }
 }

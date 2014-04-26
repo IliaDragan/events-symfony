@@ -71,15 +71,9 @@ class Category
     /**
      * @var object
      *
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="categories")
-     * @ORM\JoinTable(name="CategoriesGroups")
+     * @ORM\ManyToMany(targetEntity="Event", mappedBy="categories")
      */
     private $events;
-
-    public function __construct()
-    {
-        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
@@ -120,21 +114,11 @@ class Category
      * @param \IPG\EventsBundle\Entity\Event $events
      * @return Category
      */
-    public function addEvent(\IPG\EventsBundle\Entity\Event $events)
+    public function setEvents(Event $event)
     {
-        $this->events[] = $events;
+        $this->events = $event;
 
         return $this;
-    }
-
-    /**
-     * Remove events
-     *
-     * @param \IPG\EventsBundle\Entity\Event $events
-     */
-    public function removeEvent(\IPG\EventsBundle\Entity\Event $events)
-    {
-        $this->events->removeElement($events);
     }
 
     /**

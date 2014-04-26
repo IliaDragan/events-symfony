@@ -28,9 +28,17 @@
         {% block content %}{% endblock %}
     </div> <!-- /container -->
 </div>
-<!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
-<script src="{{ asset('js/jquery.js') }}"></script>
+{% block javascripts %}
+    {% javascripts '@IPGEventsBundle/Resources/public/js/jquery.js'
+        '@IPGEventsBundle/Resources/public/js/scripts.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{#<!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+<script src="{{ asset('js/jquery.js') }}"></script>#}
+{#
+TODO: add bootstrap.js in normal js blocks :)
 <!-- Include all JavaScripts, compiled by Assetic -->
-<script src="{{ asset('js/bootstrap.js') }}"></script>
+<script src="{{ asset('js/bootstrap.js') }}"></script>#}
 </body>
 </html>

@@ -23,6 +23,13 @@ class EventController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
+            if ($categories = $event->getCategories()) {
+                $parentCategory = $form->get('parentCategory')->getData();
+                foreach ($categories as $category) {
+                    $category->setParent($parentCategory);
+                    $em->persist($category);
+                }
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('event_page', array('id' => $event->getId())));
