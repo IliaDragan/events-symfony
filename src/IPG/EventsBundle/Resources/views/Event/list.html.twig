@@ -1,0 +1,22 @@
+{% extends 'IPGEventsBundle::layout.html.twig' %}
+{% block content %}
+    <h2>Events</h2>
+    {% for event in events %}
+        <h3>Event</h3>
+        <div class="event_name">
+            <span class="event_name_label"><strong>Name:</strong> {{ event.name }}</span>
+        </div>
+        <div class="event_location">
+            <span class="event_description_label"><strong>Description:</strong> {{ event.description }}</span>
+        </div>
+        {% for category in event.categories %}
+            {% if category.parent != null %}
+                <div class="category_name">
+                    <span class="category_name_label"><strong>Category:</strong> {{ category.categoryName }}</span>
+                </div>
+            {% endif %}
+            {#{{ dump(category) }}#}
+        {% endfor %}
+        {#{{ dump(event) }}#}
+    {% endfor %}
+{% endblock %}
