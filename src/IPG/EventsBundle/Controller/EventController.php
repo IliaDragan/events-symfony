@@ -8,10 +8,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+/**
+ * Class EventController
+ * @package IPG\EventsBundle\Controller
+ *
+ * @Route("/event")
+ */
 class EventController extends Controller
 {
     /**
-     * @Route("/event/create")
+     * @Route("/create", name="event_create")
      *
      * @Template()
      */
@@ -40,7 +46,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/event/{id}", name="event_page")
+     * @Route("/{id}", name="event_page")
      *
      * @Template()
      */
@@ -52,5 +58,21 @@ class EventController extends Controller
         $repo = $em->getRepository('IPGEventsBundle:Event');
         $event = $repo->find($id);
         return array('event' => $event);
+    }
+
+    /**
+     * @Route("/", name="event_list")
+     *
+     * @Template()
+     */
+    public function listAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('IPGEventsBundle:Event');
+        $events = $repo->findAll();
+
+        return array(
+            'events' => $events,
+        );
     }
 }
