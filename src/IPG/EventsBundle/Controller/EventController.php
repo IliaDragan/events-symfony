@@ -2,11 +2,13 @@
 
 namespace IPG\EventsBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use IPG\EventsBundle\Form\EventType;
 use IPG\EventsBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class EventController
@@ -41,12 +43,11 @@ class EventController extends Controller
             return $this->redirect($this->generateUrl('event_page', array('id' => $event->getId())));
         }
 
-
         return array('form' => $form->createView());
     }
 
     /**
-     * @Route("/{id}", name="event_page")
+     * @Route("/show/{id}", name="event_page")
      *
      * @Template()
      */
@@ -74,5 +75,47 @@ class EventController extends Controller
         return array(
             'events' => $events,
         );
+    }
+
+    /**
+     * @param $id integer event id
+     *
+     * @Route("/edit/{id}", name="event_edit")
+     *
+     * @Template("IPGEventsBundle:Event:create.html.twig")
+     */
+    public function editAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository('IPGEventsBundle:Event')->find($id);
+
+        if (!$event) {
+            throw new $this->createNotFoundException('Event with id '.$id.' wasn\'t found! :(');
+        }
+
+        $form = $this->createForm(new EventType(), $event);
+        $form->handleRequest($request);
+
+        $originalCategories = new ArrayCollection();
+
+        foreach ($event->getCategories() as $category) {
+            $originalCategories->add($category);
+        }
+
+        if ($form->isValid()) {
+            foreach ($originalCategories as $category) {
+                if (false === $event->getCategories()->contains($category)) {
+                    $category->getEvent()->removeElement($event);
+
+                    $em->persist($category);
+                }
+            }
+            $em->persist($event);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('event_page', array('id' => $event->getId())));
+        }
+
+        return array('form' => $form->createView());
     }
 }
