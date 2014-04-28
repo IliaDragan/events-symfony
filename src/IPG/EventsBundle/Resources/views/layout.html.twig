@@ -5,7 +5,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
 </head>
-<body>
+<body style="padding: 60px 0 0 0;">
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
@@ -17,8 +17,8 @@
             <a class="brand" href="#">Events</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="event/create">Create event</a></li>
+                    <li><a href="{{ url('event_list') }}">Home</a></li>
+                    <li><a href="{{ url('event_create') }}">Create event</a></li>
                     <li><a href="location/create">New location</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
