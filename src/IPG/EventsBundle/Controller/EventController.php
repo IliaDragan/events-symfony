@@ -43,7 +43,10 @@ class EventController extends Controller
             return $this->redirect($this->generateUrl('event_page', array('id' => $event->getId())));
         }
 
-        return array('form' => $form->createView());
+        return array(
+            'pageTitle' => 'Create event',
+            'form' => $form->createView(),
+        );
     }
 
     /**
@@ -116,6 +119,9 @@ class EventController extends Controller
             return $this->redirect($this->generateUrl('event_page', array('id' => $event->getId())));
         }
 
-        return array('form' => $form->createView());
+        return array(
+            'pageTitle' => 'Edit event',
+            'form' => $form->createView(),
+        );
     }
 }

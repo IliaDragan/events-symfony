@@ -1,8 +1,7 @@
 {% extends "IPGEventsBundle::layout.html.twig" %}
 {% block content %}
-    {#{{ form(form) }}#}
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-        {#{{ dump(form) }}#}
+    <h2>{{ pageTitle }}</h2>
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-horizontal'}}) }}
         {{ form_row(form.locationId) }}
         {{ form_row(form.name) }}
         {{ form_row(form.description) }}
