@@ -4,35 +4,33 @@
 var $collectionHolder;
 
 (function($) {
+    var $collectionHolder;
+
+    // setup an "add a category" link
+    var $addCategoryLink = $('<a href="#" class="add_category_link">Add a category</a>');
+    var $newLinkLi = $('<li></li>').append($addCategoryLink);
+
     $(document).ready(function() {
-        var $collectionHolder;
+        // Get the ul that holds the collection of categories
+        $collectionHolder = $('ul.categories');
 
-        // setup an "add a category" link
-        var $addCategoryLink = $('<a href="#" class="add_category_link">Add a category</a>');
-        var $newLinkLi = $('<li></li>').append($addCategoryLink);
+        $collectionHolder.find('li').each(function() {
+            addCategoryFormDeleteLink($(this));
+        });
 
-        jQuery(document).ready(function() {
-            // Get the ul that holds the collection of categories
-            $collectionHolder = $('ul.categories');
+        // add the "add a category" anchor and li to the categories ul
+        $collectionHolder.append($newLinkLi);
 
-            $collectionHolder.find('li').each(function() {
-                addCategoryFormDeleteLink($(this));
-            });
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-            // add the "add a category" anchor and li to the categories ul
-            $collectionHolder.append($newLinkLi);
+        $addCategoryLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
 
-            // count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item (e.g. 2)
-            $collectionHolder.data('index', $collectionHolder.find(':input').length);
-
-            $addCategoryLink.on('click', function(e) {
-                // prevent the link from creating a "#" on the URL
-                e.preventDefault();
-
-                // add a new category form (see next code block)
-                addCategoryForm($collectionHolder, $newLinkLi);
-            });
+            // add a new category form (see next code block)
+            addCategoryForm($collectionHolder, $newLinkLi);
         });
     });
 
