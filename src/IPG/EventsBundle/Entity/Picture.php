@@ -3,6 +3,7 @@
 namespace IPG\EventsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Picture
@@ -31,7 +32,7 @@ class Picture
     /**
      * @var string
      *
-     * @ORM\Column(name="path", type="string", length=255)
+     * @ORM\Column(name="path", type="string", length=255, nullable="true")
      */
     private $path;
 
@@ -39,7 +40,7 @@ class Picture
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -62,7 +63,7 @@ class Picture
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -85,10 +86,30 @@ class Picture
     /**
      * Get path
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
         return $this->path;
+    }
+
+    public function getAbsolutePath()
+    {
+        return (null === $this->path) ? null : $this->getUploadRootDir().'/'.$this->path;
+    }
+
+    public function getWebPath()
+    {
+        return (null === $this->path) ? null : $this->getUploadDir().'/'.$this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'uploads/pictures';
     }
 }
