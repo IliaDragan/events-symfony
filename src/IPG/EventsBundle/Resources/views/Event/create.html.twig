@@ -13,6 +13,8 @@
                 <li>{{ form_row(category.categoryName) }}</li>
             {% endfor %}
         </ul>
+        <ul class="pictures" data-prototype="{{ form_widget(form.pictures.vars.prototype)|e }}">
+        </ul>
     {{ form_end(form) }}
 {% endblock %}
 

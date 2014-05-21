@@ -19,7 +19,6 @@ class PictureType extends AbstractType
                 "required" => FALSE,
                 "attr" => array(
                     "accept" => "image/*",
-                    "multiple" => "multiple",
                 )
             ));
     }

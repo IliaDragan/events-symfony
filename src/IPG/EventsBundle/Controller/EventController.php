@@ -40,9 +40,13 @@ class EventController extends Controller
                 }
 
             }
-            if ($picture = $form->get('pictures')->getData()) {
-                $picture->setEvent($event);
-                $em->persist($picture);
+            if ($pictures = $form->get('pictures')->getData()) {
+                foreach ($pictures as $picture) {
+                    if (null !== $picture->getPath()) {
+                        $picture->setEvent($event);
+                        $em->persist($picture);
+                    }
+                }
             }
             $em->flush();
 
