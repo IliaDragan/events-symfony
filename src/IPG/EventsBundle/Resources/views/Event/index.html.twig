@@ -1,5 +1,8 @@
-Event name: {{  event.name }}
-<br />
-Event location: {{ event.locationId }}
-<br />
-Event description: {{ event.description }}
+{% extends('IPGEventsBundle::layout.html.twig') %}
+{% block content %}
+    Event name: {{  event.name }}
+    <br />
+    Event location: {{ event.locationId }}
+    <br />
+    Event description: {{ event.description }}
+{% endblock %}
