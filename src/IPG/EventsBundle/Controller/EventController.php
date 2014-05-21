@@ -3,6 +3,7 @@
 namespace IPG\EventsBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use IPG\EventsBundle\Entity\Picture;
 use IPG\EventsBundle\Form\EventType;
 use IPG\EventsBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,6 +38,11 @@ class EventController extends Controller
                     $category->setParent($parentCategory);
                     $em->persist($category);
                 }
+
+            }
+            if ($picture = $form->get('pictures')->getData()) {
+                $picture->setEvent($event);
+                $em->persist($picture);
             }
             $em->flush();
 

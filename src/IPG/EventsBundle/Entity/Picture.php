@@ -3,6 +3,7 @@
 namespace IPG\EventsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -10,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="IPG\EventsBundle\Entity\PictureRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Picture
 {
@@ -25,17 +27,27 @@ class Picture
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="path", type="string", length=255, nullable=true)
      */
     private $path;
 
+    /**
+     * @Assert\File(maxSize="5120k")
+     *
+     * @var file
+     */
+    private $file;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="pictures")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     */
+    private $event;
+
+    /**
+     * @var string
+     */
+    private $temp;
 
     /**
      * Get id
@@ -45,29 +57,6 @@ class Picture
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Picture
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -81,6 +70,40 @@ class Picture
         $this->path = $path;
 
         return $this;
+    }
+
+    /**
+     * Set file
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+
+        if (isset($this->path)) {
+            $this->temp = $this->path;
+            $this->path = null;
+        } else {
+            $this->path = 'initial';
+        }
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if(null !== $this->getFile()) {
+            $fileName = sha1(uniqid(mt_rand(), true));
+            $this->path = $fileName.'.'.$this->getFile()->guessExtension();
+        }
     }
 
     /**
@@ -111,5 +134,57 @@ class Picture
     protected function getUploadDir()
     {
         return 'uploads/pictures';
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        $this->getFile()->move($this->getUploadRootDir(), $this->getFile()->getClientOriginalName());
+
+        if (isset($this->temp)) {
+            unlink($this->getUploadRootDir().'/'.$this->temp);
+            $this->temp = null;
+        }
+        $this->file = null;
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
+    }
+
+    /**
+     * Set picture
+     *
+     * @param $event
+     * @return $this
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * Get eventId
+     *
+     * @return mixed
+     */
+    public function getEvent()
+    {
+        return $this->event;
     }
 }

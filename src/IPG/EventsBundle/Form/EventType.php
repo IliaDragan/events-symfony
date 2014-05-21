@@ -37,6 +37,7 @@ class EventType extends AbstractType
                 'allow_delete'  => true,
                 'by_reference'  => false,
             ))
+            ->add('pictures', new PictureType(), array('mapped' => false))
             ->add('save', 'submit')
         ;
     }
