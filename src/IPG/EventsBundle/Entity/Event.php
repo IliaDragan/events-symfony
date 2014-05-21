@@ -62,7 +62,7 @@ class Event
     /**
      * @var class
      *
-     * @ORM\ManyToMany(targetEntity="Category", inversedBy="events", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="events", cascade={"persist"})
      * @ORM\JoinTable(name="events_categories")
      */
     private $categories;
