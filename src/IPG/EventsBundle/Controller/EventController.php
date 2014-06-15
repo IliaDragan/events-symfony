@@ -43,7 +43,6 @@ class EventController extends Controller
             if ($pictures = $form->get('pictures')->getData()) {
                 foreach ($pictures as $picture) {
                     if (null !== $picture->getPath()) {
-                        $event->setPictures($picture);
                         $picture->setEvent($event);
                         $em->persist($picture);
                     }
@@ -65,14 +64,18 @@ class EventController extends Controller
      *
      * @Template()
      */
-    public function indexAction($id) {
+    public function indexAction($id)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository('IPGEventsBundle:Event')
+            ->find($id);
 
-        $event = new Event();
+        $pictures = $this->getDoctrine()->getRepository('IPGEventsBundle:Picture')->findBy(array('event' => $id));
 
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('IPGEventsBundle:Event');
-        $event = $repo->find($id);
-        return array('event' => $event);
+        return array(
+            'event' => $event,
+            'pictures' => $pictures,
+        );
     }
 
     /**

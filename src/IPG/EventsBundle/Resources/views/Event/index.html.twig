@@ -5,4 +5,9 @@
     Event location: {{ event.locationId }}
     <br />
     Event description: {{ event.description }}
+    <br />
+    Pictures:
+    {% for picture in pictures %}
+        <img src="/{{ picture.webPath }}" alt=""/>
+    {% endfor %}
 {% endblock %}
