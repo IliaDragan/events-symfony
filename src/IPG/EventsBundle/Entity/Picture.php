@@ -171,7 +171,7 @@ class Picture
      * @param $event
      * @return $this
      */
-    public function setEvent(Event $event)
+    public function setEvent(Event $event = null)
     {
         $this->event = $event;
 

@@ -67,8 +67,14 @@ class Event
      */
     private $categories;
 
+    /**
+     * ORM\OneToMany(targetEntity="Picture", mappedBy="event")
+     */
+    private $pictures;
+
     public function __construct()
     {
+        $this->pictures   = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
 
@@ -182,5 +188,15 @@ class Event
     public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
+    }
+
+    public function setPictures(Picture $picture)
+    {
+        $this->pictures->add($picture);
+    }
+
+    public function getPictures()
+    {
+        return $this->pictures;
     }
 }
