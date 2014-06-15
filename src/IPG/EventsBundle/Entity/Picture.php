@@ -146,7 +146,7 @@ class Picture
             return;
         }
 
-        $this->getFile()->move($this->getUploadRootDir(), $this->getFile()->getClientOriginalName());
+        $this->getFile()->move($this->getUploadRootDir(), $this->path);
 
         if (isset($this->temp)) {
             unlink($this->getUploadRootDir().'/'.$this->temp);
